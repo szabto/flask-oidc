@@ -138,6 +138,7 @@ class OpenIDConnect(object):
         app.config.setdefault('OIDC_GOOGLE_APPS_DOMAIN', None)
         app.config.setdefault('OIDC_ID_TOKEN_COOKIE_NAME', 'oidc_id_token')
         app.config.setdefault('OIDC_ID_TOKEN_COOKIE_PATH', '/')
+        app.config.setdefault('OIDC_ID_TOKEN_COOKIE_SAMESITE', 'Lax')
         app.config.setdefault('OIDC_ID_TOKEN_COOKIE_TTL', 7 * 86400)  # 7 days
         # should ONLY be turned off for local debugging
         app.config.setdefault('OIDC_COOKIE_SECURE', True)
@@ -394,6 +395,7 @@ class OpenIDConnect(object):
                 response.set_cookie(
                     current_app.config['OIDC_ID_TOKEN_COOKIE_NAME'],
                     signed_id_token,
+                    samesite=current_app.config['OIDC_ID_TOKEN_COOKIE_SAMESITE'],
                     secure=cookie_secure,
                     httponly=True,
                     max_age=current_app.config['OIDC_ID_TOKEN_COOKIE_TTL'])
@@ -403,6 +405,7 @@ class OpenIDConnect(object):
                     current_app.config['OIDC_ID_TOKEN_COOKIE_NAME'],
                     '',
                     path=current_app.config['OIDC_ID_TOKEN_COOKIE_PATH'],
+                    samesite=current_app.config['OIDC_ID_TOKEN_COOKIE_SAMESITE'],
                     secure=cookie_secure,
                     httponly=True,
                     expires=0)
